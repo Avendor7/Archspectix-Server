@@ -1,10 +1,11 @@
 import express from 'express';
 import axios from 'axios';
+import cors from 'cors';
 
 const app = express();
 
 app.use(express.json());
-
+app.use(cors());
 app.get('/append', (req, res) => {
     const url = 'https://archlinux.org/packages/search/json/?q=';
     //new change
