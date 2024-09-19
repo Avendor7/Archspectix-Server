@@ -42,24 +42,35 @@ app.get('/alr', async (req, res) => {
     }
 });
 
-app.get('/search', (req, res) => {
+//TODO: consolidate the two results to a common object
+app.get('/search', async (req, res) => {
 
     const value = req.query.value;
 
     if (!value) {
         return res.status(400).json({ error: 'Value parameter is required' });
     }
-    const ALRResult = searchALR(value);
-    const AURResult = searchAUR(value);
+    let alrData = {};
+    let aurData = {};
 
-    if (ALRResult || AURResult == "error") {
-        res.status(500).json({ error: 'Internal Server Error' });
-    } else {
-        res.status(200).json({
-            ALRResult,
-            AURResult
-        });
+    try {
+        alrData = await searchALR(value);
+    } catch (error) {
+        console.log('Error', error);
+        return res.status(500).json({ error });
     }
+    try {
+        aurData = await searchAUR(value);
+    } catch (error) {
+        console.log('Error', error);
+        return res.status(500).json({ error });
+    }
+
+
+    res.status(200).json({
+        alrData,
+        aurData
+    });
 
 });
 
