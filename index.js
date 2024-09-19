@@ -66,11 +66,7 @@ app.get('/search', async (req, res) => {
         return res.status(500).json({ error });
     }
 
-
-    res.status(200).json({
-        alrData,
-        aurData
-    });
+    res.status(200).json(normalizeResults(alrData, aurData));
 
 });
 
@@ -86,7 +82,7 @@ function searchALR(value) {
 }
 
 function searchAUR(value) {
-    const url = 'https://archlinux.org/packages/search/json/?q=';
+    const url = 'https://aur.archlinux.org/rpc/v5/search/';
 
     return axios.get(`${url}${value}`)
         .then((response) => response.data) // Return the data directly from .then()
@@ -95,6 +91,26 @@ function searchAUR(value) {
             throw error; // Re-throw the error to propagate it up the call stack
         });
 }
+
+function normalizeResults(alrData, aurData) {
+    //TODO: this should use an interface when converted to typescript
+    let allResults = [];
+    for (const result of alrData.results) {
+        allResults.push({
+            name: result.pkgname,
+            version: result.pkgver
+        });
+    }
+    for (const result of aurData.results) {
+        allResults.push({
+            name: result.Name,
+            version: result.Version
+        });
+    }
+
+    return allResults;
+}
+
 
 app.listen(3001, () => {
     console.log('Server listening on port 3001');
