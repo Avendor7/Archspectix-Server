@@ -102,7 +102,8 @@ function normalizeResults(alrData, aurData) {
             source: "ALR",
             description: result.description,
             datetype: "epoch",
-            last_updated_date: result.last_update
+            last_updated_date: result.last_update,
+            flagged_date: result.flag_date
         });
     }
     for (const result of aurData.results) {
@@ -112,7 +113,8 @@ function normalizeResults(alrData, aurData) {
             source: "AUR",
             description: result.Description,
             datetype: "ISO8601",
-            last_updated_date: result.LastModified
+            last_updated_date: result.LastModified,
+            flagged_date: result.OutOfDate
         });
     }
 
