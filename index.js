@@ -98,13 +98,21 @@ function normalizeResults(alrData, aurData) {
     for (const result of alrData.results) {
         allResults.push({
             name: result.pkgname,
-            version: result.pkgver
+            version: result.pkgver,
+            source: "ALR",
+            description: result.description,
+            datetype: "epoch",
+            last_updated_date: result.last_update
         });
     }
     for (const result of aurData.results) {
         allResults.push({
             name: result.Name,
-            version: result.Version
+            version: result.Version,
+            source: "AUR",
+            description: result.Description,
+            datetype: "ISO8601",
+            last_updated_date: result.LastModified
         });
     }
 
