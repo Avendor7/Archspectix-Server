@@ -65,7 +65,7 @@ app.get('/search', async (req, res) => {
         console.log('Error', error);
         return res.status(500).json({ error });
     }
-
+    console.log("search complete for: " + value);
     res.status(200).json(normalizeResults(alrData, aurData));
 
 });
