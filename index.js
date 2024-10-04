@@ -6,7 +6,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-app.get('/aur', async (req, res) => {
+app.get('/aur/search', async (req, res) => {
     const url = 'https://aur.archlinux.org/rpc/v5/search/';
     //new change
     const value = req.query.value;
@@ -24,7 +24,7 @@ app.get('/aur', async (req, res) => {
     }
 });
 
-app.get('/alr', async (req, res) => {
+app.get('/alr/search', async (req, res) => {
     const url = 'https://archlinux.org/packages/search/json/?q=';
     //new change
     const value = req.query.value;
@@ -70,6 +70,43 @@ app.get('/search', async (req, res) => {
 
 });
 
+app.get('/alr/info', async (req, res) => {
+    const url = 'https://archlinux.org/packages/search/json/?q=';
+    //new change
+    const value = req.query.value;
+
+    if (!value) {
+        return res.status(400).json({ error: 'Value parameter is required' });
+    }
+
+    try {
+        const alrData = await getPackageInfoALR(value);
+        return res.json(alrData);
+    } catch (error) {
+        //console.log('Error', error);
+        return res.status(500).json({ error });
+    }
+});
+
+
+app.get('/aur/info', async (req, res) => {
+    const url = 'https://archlinux.org/packages/search/json/?q=';
+    //new change
+    const value = req.query.value;
+
+    if (!value) {
+        return res.status(400).json({ error: 'Value parameter is required' });
+    }
+
+    try {
+        const alrData = await getPackageInfoAUR(value);
+        return res.json(alrData);
+    } catch (error) {
+        console.log('Error', error);
+        return res.status(500).json({ error });
+    }
+});
+
 function searchALR(value) {
     const url = 'https://archlinux.org/packages/search/json/?q=';
 
@@ -83,6 +120,28 @@ function searchALR(value) {
 
 function searchAUR(value) {
     const url = 'https://aur.archlinux.org/rpc/v5/search/';
+
+    return axios.get(`${url}${value}`)
+        .then((response) => response.data) // Return the data directly from .then()
+        .catch((error) => {
+            console.error(error);
+            throw error; // Re-throw the error to propagate it up the call stack
+        });
+}
+
+function getPackageInfoAUR(value) {
+    const url = 'https://aur.archlinux.org/rpc/v5/info?arg=';
+
+    return axios.get(`${url}${value}`)
+        .then((response) => response.data) // Return the data directly from .then()
+        .catch((error) => {
+            console.error(error);
+            throw error; // Re-throw the error to propagate it up the call stack
+        });
+}
+
+function getPackageInfoALR(value) {
+    const url = 'https://archlinux.org/packages/search/json/?name=';
 
     return axios.get(`${url}${value}`)
         .then((response) => response.data) // Return the data directly from .then()
