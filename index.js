@@ -42,7 +42,6 @@ app.get('/alr/search', async (req, res) => {
     }
 });
 
-//TODO: consolidate the two results to a common object
 app.get('/search', async (req, res) => {
 
     const value = req.query.value;
