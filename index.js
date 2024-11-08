@@ -159,7 +159,6 @@ function normalizeResults(alrData, aurData) {
             version: result.pkgver,
             source: "ALR",
             description: result.description,
-            datetype: "epoch",
             last_updated_date: result.last_update,
             flagged_date: result.flag_date
         });
@@ -170,15 +169,22 @@ function normalizeResults(alrData, aurData) {
             version: result.Version,
             source: "AUR",
             description: result.Description,
-            datetype: "ISO8601",
-            last_updated_date: result.LastModified,
-            flagged_date: result.OutOfDate
+            last_updated_date: convertEpochToISO8601(result.LastModified),
+            flagged_date: convertEpochToISO8601(result.OutOfDate)
         });
     }
 
     return allResults;
 }
 
+function convertEpochToISO8601(epoch) {
+    if (epoch) {
+        return new Date(epoch * 1000);
+    } else {
+        return null;
+    }
+
+}
 
 app.listen(3001, () => {
     console.log('Server listening on port 3001');
