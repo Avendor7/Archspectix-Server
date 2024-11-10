@@ -70,8 +70,6 @@ app.get('/search', async (req, res) => {
 });
 
 app.get('/alr/info', async (req, res) => {
-    const url = 'https://archlinux.org/packages/search/json/?q=';
-    //new change
     const value = req.query.value;
 
     if (!value) {
@@ -89,8 +87,6 @@ app.get('/alr/info', async (req, res) => {
 
 
 app.get('/aur/info', async (req, res) => {
-    const url = 'https://archlinux.org/packages/search/json/?q=';
-    //new change
     const value = req.query.value;
 
     if (!value) {
@@ -119,7 +115,7 @@ function searchALR(value) {
 
 function searchAUR(value) {
     const url = 'https://aur.archlinux.org/rpc/v5/search/';
-
+    
     return axios.get(`${url}${value}`)
         .then((response) => response.data) // Return the data directly from .then()
         .catch((error) => {
