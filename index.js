@@ -94,8 +94,10 @@ app.get('/aur/info', async (req, res) => {
     }
 
     try {
-        const alrData = await getPackageInfoAUR(value);
-        return res.json(alrData);
+        let aurData = await getPackageInfoAUR(value);
+        aurData.results[0].LastModified = convertEpochToISO8601(aurData.results[0].LastModified);
+        aurData.results[0].OutOfDate = convertEpochToISO8601(aurData.results[0].OutOfDate);
+        return res.json(aurData);
     } catch (error) {
         console.log('Error', error);
         return res.status(500).json({ error });
@@ -133,6 +135,7 @@ function getPackageInfoAUR(value) {
             console.error(error);
             throw error; // Re-throw the error to propagate it up the call stack
         });
+
 }
 
 function getPackageInfoALR(value) {
