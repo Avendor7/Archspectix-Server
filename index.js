@@ -6,7 +6,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-app.get('/aur/search', async (req, res) => {
+app.get('/api/aur/search', async (req, res) => {
     const url = 'https://aur.archlinux.org/rpc/v5/search/';
     //new change
     const value = req.query.value;
@@ -24,7 +24,7 @@ app.get('/aur/search', async (req, res) => {
     }
 });
 
-app.get('/alr/search', async (req, res) => {
+app.get('/api/alr/search', async (req, res) => {
     const url = 'https://archlinux.org/packages/search/json/?q=';
     //new change
     const value = req.query.value;
@@ -42,7 +42,7 @@ app.get('/alr/search', async (req, res) => {
     }
 });
 
-app.get('/search', async (req, res) => {
+app.get('/api/search', async (req, res) => {
 
     const value = req.query.value;
 
@@ -69,7 +69,7 @@ app.get('/search', async (req, res) => {
 
 });
 
-app.get('/alr/info', async (req, res) => {
+app.get('/api/alr/info', async (req, res) => {
     const value = req.query.value;
 
     if (!value) {
@@ -86,7 +86,7 @@ app.get('/alr/info', async (req, res) => {
 });
 
 
-app.get('/aur/info', async (req, res) => {
+app.get('/api/aur/info', async (req, res) => {
     const value = req.query.value;
 
     if (!value) {
@@ -185,6 +185,6 @@ function convertEpochToISO8601(epoch) {
 
 }
 
-app.listen(3001, () => {
-    console.log('Server listening on port 3001');
+app.listen(3031, () => {
+    console.log('Server listening on port 3031');
 });
